@@ -1,0 +1,110 @@
+// [converter] This is defined recursively in LESS, but Sass supports real loops
+@mixin calc-grid-column($index, $class, $type) {
+  @if ($type == width) and ($index > 0) {
+    .#{$class}-#{$index} {
+      width: percentage(($index / $grid-columns));
+    }
+  }
+  @if ($type == push) and ($index > 0) {
+    .#{$class}-push-#{$index} {
+      left: percentage(($index / $grid-columns));
+    }
+  }
+  @if ($type == push) and ($index == 0) {
+    .#{$class}-push-0 {
+      left: auto;
+    }
+  }
+  @if ($type == pull) and ($index > 0) {
+    .#{$class}-pull-#{$index} {
+      right: percentage(($index / $grid-columns));
+    }
+  }
+  @if ($type == pull) and ($index == 0) {
+    .#{$class}-pull-0 {
+      right: auto;
+    }
+  }
+  @if ($type == offset) {
+    .#{$class}-offset-#{$index} {
+      margin-left: percentage(($index / $grid-columns));
+    }
+  }
+}
+
+// [converter] This is defined recursively in LESS, but Sass supports real loops
+@mixin loop-grid-columns($columns, $class, $type) {
+  @for $i from 0 through $columns {
+    @include calc-grid-column($i, $class, $type);
+  }
+}
+
+
+// Create grid for specific class
+@mixin make-grid($class) {
+  @include loop-grid-columns($grid-columns, $class, width);
+  @include loop-grid-columns($grid-columns, $class, pull);
+  @include loop-grid-columns($grid-columns, $class, push);
+  @include loop-grid-columns($grid-columns, $class, offset);
+}
+
+@include make-grid(small);
+
+@media only screen and (min-width: $screen-xsmall) {
+	@include make-grid(xsmall);
+}
+
+@media only screen and (min-width: $screen-medium) {
+	@include make-grid(medium);
+}
+
+@media only screen and (min-width: $screen-xmedium) {
+	@include make-grid(xmedium);
+}
+
+// Default Desktop Screen
+@media only screen and (min-width: $screen-large) {
+	@include make-grid(large);
+}
+
+//Xtra Large Screen
+@media only screen and (min-width: $screen-xlarge) {
+	@include make-grid(xlarge);
+}
+
+.row {
+	width: 100%;
+    max-width: $screen-large;
+   
+    margin-left: auto;
+    margin-right: auto;
+
+    padding-left:  ceil(($grid-gutter-width / 2));
+    padding-right: floor(($grid-gutter-width / 2));
+
+    @include clearfix();
+
+    //Fluid Container 
+    &--fluid {
+	    max-width: 100%;
+    }
+}
+
+.column, .columns {
+	float: left;
+	min-height: 1px;
+	position: relative;
+	padding-left:  ceil(($grid-gutter-width / 2));
+    padding-right: floor(($grid-gutter-width / 2));
+
+    .lt-ie8 &,
+    .lt-ie9 &{
+    	padding-left: 1%;
+    	padding-right: 1%;
+    }
+}
+
+[class*="column"] + [class*="column"]:last-child {
+    float: right;
+}
+// BLOCK GRID

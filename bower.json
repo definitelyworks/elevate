@@ -1,0 +1,12 @@
+{
+  "name": "definite-framework",
+  "version": "1.0.0",
+  "authors": [
+    "definite <info@definite.co.id>"
+  ],
+  "description": "LIBSASS, Font Awesome SCSS, Grunt : SASS, WATCH, CONCAT, UGLIFY",
+  "dependencies": {
+    "jquery": "~3.1.1",
+    "font-awesome": "~4.7.0"
+  }
+}

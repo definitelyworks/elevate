@@ -1,0 +1,148 @@
+// =============================================================================
+// String Replace
+// =============================================================================
+
+@function str-replace($string, $search, $replace: "") {
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+
+  @return $string;
+}
+
+// =============================================================================
+// Font Face
+// =============================================================================
+
+@mixin font-face($name, $path, $weight: null, $style: null, $exts: eot  woff ttf svg) {
+  $src: null;
+
+  $extmods: (
+    eot: "?",
+    svg: "#" + str-replace($name, " ", "_")
+  );
+
+  $formats: (
+    otf: "opentype",
+    ttf: "truetype"
+  );
+
+  @each $ext in $exts {
+    $extmod: if(map-has-key($extmods, $ext), $ext + map-get($extmods, $ext), $ext);
+    $format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext);
+    $src: append($src, url(quote($path + "." + $extmod)) format(quote($format)), comma);
+  }
+
+  @font-face {
+    font-family: quote($name);
+    font-style: $style;
+    font-weight: $weight;
+    src: $src;
+  }
+}
+
+// =============================================================================
+// Others
+// =============================================================================
+@mixin transition($prop :all, $duration :.3s, $time-func: ease-in-out, $delay: 0s){
+  -webkit-transition: $prop $duration $time-func $delay;
+  -o-transition: $prop $duration $time-func $delay;
+  transition: $prop $duration $time-func $delay;
+}
+
+@mixin translateX($val: 100%) {
+  -webkit-transform: translateX($val);
+  -ms-transform: translateX($val);
+  -o-transform: translateX($val);
+  transform: translateX($val);
+}
+
+@mixin translateY($val: 50%) {
+  -webkit-transform: translateY($val);
+  -ms-transform: translateY($val);
+  -o-transform: translateY($val);
+  transform: translateY($val);
+}
+
+//mixins border radius
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+          border-radius: $radius;
+}
+
+//box shadow
+@mixin box-shadow($box-shadow) {
+  -webkit-box-shadow: $box-shadow;
+     -moz-box-shadow: $box-shadow;
+      -ms-box-shadow: $box-shadow;
+          box-shadow: $box-shadow;
+}
+
+@mixin text-rendering{
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@mixin placeholder($color) {
+  ::-webkit-input-placeholder {
+   color: $color;
+  }
+
+  :-moz-placeholder { /* Firefox 18- */
+     color: $color;
+  }
+
+  ::-moz-placeholder {  /* Firefox 19+ */
+     color: $color;
+  }
+
+  :-ms-input-placeholder {
+     color: $color;
+  }
+}
+
+@mixin background-stuff {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+@mixin center-vertical{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+}
+
+@mixin translate3d($x, $y, $z) {
+  -webkit-transform: translate3d($x, $y, $z);
+     -moz-transform: translate3d($x, $y, $z);
+      -ms-transform: translate3d($x, $y, $z);
+          transform: translate3d($x, $y, $z);
+}
+
+@mixin scale($value) {
+  -webkit-transform: scale($value);
+     -moz-transform: scale($value);
+    -ms-transform: scale($value);
+     -o-transform: scale($value);
+      transform: scale($value);
+}
+
+@mixin clearfix() {
+  &:before,
+  &:after {
+    content: " "; // 1
+    display: table; // 2
+  }
+  &:after {
+    clear: both;
+  }
+}

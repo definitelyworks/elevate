@@ -1,0 +1,30 @@
+//== Masthead
+$masthead-position: relative !default;
+$masthead-height: auto !default;
+$masthead-padding: 120px !default;
+$masthead-margin: 60px !default;
+$masthead-bgcolor: #42b9bc !default;
+$masthead-color: #FFF !default;
+//==Add default background position, size and repeat (set true if you need)
+$masthead-bgimage: false;
+
+.masthead {
+	position: $masthead-position;
+	height: $masthead-height;
+	padding-top: ceil(($masthead-padding / 2));
+    padding-bottom: floor(($masthead-padding / 2));
+    margin-bottom: $masthead-margin;
+    background: $masthead-bgcolor;
+    color: $masthead-color;
+    display: table;
+    width: 100%;
+	
+	// Check if variable value true or false
+    @if $masthead-bgimage == true {
+     	@include background-stuff;
+  	}
+
+    &--full {
+    	height: 100vh;
+    }
+}
